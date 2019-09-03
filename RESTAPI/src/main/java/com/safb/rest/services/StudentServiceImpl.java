@@ -45,4 +45,17 @@ public class StudentServiceImpl implements StudentService
 
     return student;
   }
+
+  @Override
+  public void deleteStudent(Integer studentId)
+  {
+    Student student = studentsRepository.findByStudentId(studentId);
+
+    if (student == null)
+    {
+      throw new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+    }
+
+    studentsRepository.delete(student);
+  }
 }

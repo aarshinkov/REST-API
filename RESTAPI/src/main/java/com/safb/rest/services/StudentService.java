@@ -8,4 +8,6 @@ public interface StudentService
   List<Student> getStudents(Integer page, Integer limit);
 
   Student getStudent(Integer studentId);
+
+  void deleteStudent(Integer studentId);
 }
