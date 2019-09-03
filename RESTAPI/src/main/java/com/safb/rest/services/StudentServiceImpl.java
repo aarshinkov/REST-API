@@ -2,9 +2,12 @@ package com.safb.rest.services;
 
 import com.safb.rest.entity.*;
 import com.safb.rest.exceptions.*;
+import com.safb.rest.model.*;
 import com.safb.rest.repository.*;
 import com.safb.rest.response.*;
+import com.safb.rest.utils.*;
 import java.util.*;
+import org.springframework.beans.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
@@ -15,8 +18,11 @@ public class StudentServiceImpl implements StudentService
   @Autowired
   private StudentsRepository studentsRepository;
 
+  @Autowired
+  private Utils utils;
+
   @Override
-  public List<Student> getStudents(Integer page, Integer limit)
+  public List<StudentModel> getStudents(Integer page, Integer limit)
   {
 
     if (page > 0)
@@ -28,28 +34,62 @@ public class StudentServiceImpl implements StudentService
 
     Page<Student> studentsPage = studentsRepository.findAll(pageableRequest);
 
-    List<Student> students = studentsPage.getContent();
+    List<Student> entityStudents = studentsPage.getContent();
 
-    return students;
+    List<StudentModel> studentsList = new ArrayList<>();
+
+    for (Student entityStudent : entityStudents)
+    {
+      StudentModel studentModel = new StudentModel();
+
+      BeanUtils.copyProperties(entityStudent, studentModel);
+
+      studentsList.add(studentModel);
+    }
+
+    return studentsList;
   }
 
   @Override
-  public Student getStudent(Integer studentId)
+  public StudentModel getStudent(String publicId)
   {
-    Student student = studentsRepository.findByStudentId(studentId);
+    Student student = studentsRepository.findByPublicId(publicId);
 
     if (student == null)
     {
       throw new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
     }
 
-    return student;
+    StudentModel studentModel = new StudentModel();
+
+    BeanUtils.copyProperties(student, studentModel);
+
+    return studentModel;
   }
 
   @Override
-  public void deleteStudent(Integer studentId)
+  public StudentModel createStudent(StudentModel studentModel)
   {
-    Student student = studentsRepository.findByStudentId(studentId);
+    Student student = new Student();
+
+    BeanUtils.copyProperties(studentModel, student);
+
+    String publicId = utils.generateUserId(30);
+    student.setPublicId(publicId);
+
+    Student savedStudent = studentsRepository.save(student);
+
+    StudentModel resultStudent = new StudentModel();
+
+    BeanUtils.copyProperties(savedStudent, resultStudent);
+
+    return resultStudent;
+  }
+
+  @Override
+  public void deleteStudent(String publicId)
+  {
+    Student student = studentsRepository.findByPublicId(publicId);
 
     if (student == null)
     {

@@ -8,4 +8,6 @@ import org.springframework.stereotype.*;
 public interface StudentsRepository extends PagingAndSortingRepository<Student, Integer>
 {
   Student findByStudentId(Integer studentId);
+
+  Student findByPublicId(String publicId);
 }

@@ -9,9 +9,14 @@ import javax.validation.constraints.*;
 public class Student implements Serializable
 {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "student_id")
   private Integer studentId;
+
+  @NotNull
+  @Size(max = 50)
+  @Column(name = "public_id")
+  private String publicId;
 
   @NotNull
   @Size(max = 100)
@@ -31,6 +36,16 @@ public class Student implements Serializable
   public void setStudentId(Integer studentId)
   {
     this.studentId = studentId;
+  }
+
+  public String getPublicId()
+  {
+    return publicId;
+  }
+
+  public void setPublicId(String publicId)
+  {
+    this.publicId = publicId;
   }
 
   public String getFirstName()

@@ -1,13 +1,16 @@
 package com.safb.rest.services;
 
 import com.safb.rest.entity.*;
+import com.safb.rest.model.*;
 import java.util.*;
 
 public interface StudentService
 {
-  List<Student> getStudents(Integer page, Integer limit);
+  List<StudentModel> getStudents(Integer page, Integer limit);
 
-  Student getStudent(Integer studentId);
+  StudentModel getStudent(String publicId);
 
-  void deleteStudent(Integer studentId);
+  StudentModel createStudent(StudentModel studentModel);
+
+  void deleteStudent(String publicId);
 }
