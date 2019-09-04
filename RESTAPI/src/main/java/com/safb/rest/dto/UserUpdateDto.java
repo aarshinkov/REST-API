@@ -1,6 +1,6 @@
-package com.safb.rest.model;
+package com.safb.rest.dto;
 
-public class StudentModel
+public class UserUpdateDto
 {
   private String publicId;
   private String firstName;

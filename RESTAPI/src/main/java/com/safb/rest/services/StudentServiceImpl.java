@@ -21,81 +21,81 @@ public class StudentServiceImpl implements StudentService
   @Autowired
   private Utils utils;
 
-  @Override
-  public List<StudentModel> getStudents(Integer page, Integer limit)
-  {
-
-    if (page > 0)
-    {
-      page--;
-    }
-
-    Pageable pageableRequest = PageRequest.of(page, limit);
-
-    Page<Student> studentsPage = studentsRepository.findAll(pageableRequest);
-
-    List<Student> entityStudents = studentsPage.getContent();
-
-    List<StudentModel> studentsList = new ArrayList<>();
-
-    for (Student entityStudent : entityStudents)
-    {
-      StudentModel studentModel = new StudentModel();
-
-      BeanUtils.copyProperties(entityStudent, studentModel);
-
-      studentsList.add(studentModel);
-    }
-
-    return studentsList;
-  }
-
-  @Override
-  public StudentModel getStudent(String publicId)
-  {
-    Student student = studentsRepository.findByPublicId(publicId);
-
-    if (student == null)
-    {
-      throw new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-    }
-
-    StudentModel studentModel = new StudentModel();
-
-    BeanUtils.copyProperties(student, studentModel);
-
-    return studentModel;
-  }
-
-  @Override
-  public StudentModel createStudent(StudentModel studentModel)
-  {
-    Student student = new Student();
-
-    BeanUtils.copyProperties(studentModel, student);
-
-    String publicId = utils.generateUserId(30);
-    student.setPublicId(publicId);
-
-    Student savedStudent = studentsRepository.save(student);
-
-    StudentModel resultStudent = new StudentModel();
-
-    BeanUtils.copyProperties(savedStudent, resultStudent);
-
-    return resultStudent;
-  }
-
-  @Override
-  public void deleteStudent(String publicId)
-  {
-    Student student = studentsRepository.findByPublicId(publicId);
-
-    if (student == null)
-    {
-      throw new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-    }
-
-    studentsRepository.delete(student);
-  }
+//  @Override
+//  public List<StudentModel> getStudents(Integer page, Integer limit)
+//  {
+//
+//    if (page > 0)
+//    {
+//      page--;
+//    }
+//
+//    Pageable pageableRequest = PageRequest.of(page, limit);
+//
+//    Page<Student> studentsPage = studentsRepository.findAll(pageableRequest);
+//
+//    List<Student> entityStudents = studentsPage.getContent();
+//
+//    List<StudentModel> studentsList = new ArrayList<>();
+//
+//    for (Student entityStudent : entityStudents)
+//    {
+//      StudentModel studentModel = new StudentModel();
+//
+//      BeanUtils.copyProperties(entityStudent, studentModel);
+//
+//      studentsList.add(studentModel);
+//    }
+//
+//    return studentsList;
+//  }
+//
+//  @Override
+//  public StudentModel getStudent(String publicId)
+//  {
+//    Student student = studentsRepository.findByPublicId(publicId);
+//
+//    if (student == null)
+//    {
+//      throw new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+//    }
+//
+//    StudentModel studentModel = new StudentModel();
+//
+//    BeanUtils.copyProperties(student, studentModel);
+//
+//    return studentModel;
+//  }
+//
+//  @Override
+//  public StudentModel createStudent(StudentModel studentModel)
+//  {
+//    Student student = new Student();
+//
+//    BeanUtils.copyProperties(studentModel, student);
+//
+//    String publicId = utils.generateUserId(30);
+//    student.setPublicId(publicId);
+//
+//    Student savedStudent = studentsRepository.save(student);
+//
+//    StudentModel resultStudent = new StudentModel();
+//
+//    BeanUtils.copyProperties(savedStudent, resultStudent);
+//
+//    return resultStudent;
+//  }
+//
+//  @Override
+//  public void deleteStudent(String publicId)
+//  {
+//    Student student = studentsRepository.findByPublicId(publicId);
+//
+//    if (student == null)
+//    {
+//      throw new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+//    }
+//
+//    studentsRepository.delete(student);
+//  }
 }
