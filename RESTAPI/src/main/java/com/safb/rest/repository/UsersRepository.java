@@ -10,4 +10,6 @@ public interface UsersRepository extends PagingAndSortingRepository<User, Intege
   User findByUserId(Integer userId);
 
   User findByPublicId(String publicId);
+
+  User findByEmail(String username);
 }

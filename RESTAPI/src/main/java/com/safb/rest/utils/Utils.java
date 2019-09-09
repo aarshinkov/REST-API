@@ -8,15 +8,15 @@ import org.springframework.stereotype.*;
 public class Utils
 {
 
-  private final Random RANDOM = new SecureRandom();
-  private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  private static final Random RANDOM = new SecureRandom();
+  private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-  public String generateUserId(int length)
+  public static String generateUserId(int length)
   {
     return generateRandomString(length);
   }
 
-  private String generateRandomString(int length)
+  private static String generateRandomString(int length)
   {
     StringBuilder builder = new StringBuilder(length);
 

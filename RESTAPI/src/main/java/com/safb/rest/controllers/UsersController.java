@@ -3,12 +3,15 @@ package com.safb.rest.controllers;
 import com.safb.rest.dto.*;
 import com.safb.rest.entity.*;
 import com.safb.rest.exceptions.*;
+import com.safb.rest.model.*;
 import com.safb.rest.response.*;
 import com.safb.rest.services.*;
 import java.util.*;
+import javax.validation.*;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
+import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,10 +22,7 @@ public class UsersController
   @Autowired
   private UserService userService;
 
-  @GetMapping(produces =
-  {
-    MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE
-  })
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public List<UserDto> getUsers(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "limit", defaultValue = "5") Integer limit)
   {
     List<User> users = userService.getUsers(page, limit);
@@ -44,10 +44,7 @@ public class UsersController
     return userDtos;
   }
 
-  @GetMapping(value = "/{publicId}", produces =
-  {
-    MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE
-  })
+  @GetMapping(value = "/{publicId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserDto getUser(@PathVariable("publicId") String publicId)
   {
     User user = userService.getUser(publicId);
@@ -61,5 +58,24 @@ public class UsersController
     UserDto userDto = modelMapper.map(user, UserDto.class);
 
     return userDto;
+  }
+
+  @PostMapping(consumes =
+  {
+    MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE
+  }, produces =
+  {
+    MediaType.APPLICATION_JSON_VALUE
+  })
+  public UserCreateDto createUser(@Valid @RequestBody UserModel userModel, BindingResult bindingResult)
+  {
+    if (bindingResult.hasErrors())
+    {
+      throw new UserServiceException(ErrorMessages.FIELD_NOT_MATCHING_CRITERIA.getErrorMessage());
+    }
+
+    UserCreateDto createdUser = userService.createUser(userModel);
+
+    return createdUser;
   }
 }

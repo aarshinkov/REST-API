@@ -15,7 +15,9 @@ public enum ErrorMessages
   AUTHENTICATION_FAILED("Authentication failed"),
   COULD_NOT_UPDATE_RECORD("Could not update record"),
   COULD_NOT_DELETE_RECORD("Could not delete record"),
-  EMAIL_ADDRESS_NOT_VERIFIED("Email addres could not be verified");
+  EMAIL_ADDRESS_NOT_VERIFIED("Email addres could not be verified"),
+  FIELD_NOT_MATCHING_CRITERIA("Some field/s does not match the required criteria"),
+  OBJECT_EMPTY("The given object is null or empty");
 
   private String errorMessage;
 

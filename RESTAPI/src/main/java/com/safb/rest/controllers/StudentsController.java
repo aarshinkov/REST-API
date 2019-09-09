@@ -17,20 +17,14 @@ public class StudentsController
   @Autowired
   private StudentService studentService;
 
-//  @GetMapping(produces =
-//  {
-//    MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE
-//  })
+//  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 //  public List<StudentModel> getStudents(@RequestParam(value = "page", defaultValue = "0") Integer page,
 //          @RequestParam(value = "limit", defaultValue = "5") Integer limit)
 //  {
 //    return studentService.getStudents(page, limit);
 //  }
 //
-//  @GetMapping(value = "/{publicId}", produces =
-//  {
-//    MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE
-//  })
+//  @GetMapping(value = "/{publicId}", produces = MediaType.APPLICATION_JSON_VALUE)
 //  public StudentModel getStudent(@PathVariable("publicId") String publicId)
 //  {
 //    return studentService.getStudent(publicId);
@@ -39,10 +33,7 @@ public class StudentsController
 //  @PostMapping(consumes =
 //  {
 //    MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE
-//  }, produces =
-//  {
-//    MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE
-//  })
+//  }, produces = MediaType.APPLICATION_JSON_VALUE)
 //  public StudentModel createStudent(@RequestBody StudentModel studentModel) throws Exception
 //  {
 //    if (studentModel.getFirstName().isEmpty() || studentModel.getLastName().isEmpty())
@@ -55,10 +46,7 @@ public class StudentsController
 //    return resultStudent;
 //  }
 //
-//  @DeleteMapping(value = "/{publicId}", produces =
-//  {
-//    MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE
-//  })
+//  @DeleteMapping(value = "/{publicId}", produces = MediaType.APPLICATION_JSON_VALUE)
 //  public OperationStatus deleteStudent(@PathVariable("publicId") String publicId
 //  )
 //  {
