@@ -1,20 +1,21 @@
 package com.safb.rest.services;
 
-import com.safb.rest.dto.*;
-import com.safb.rest.entity.*;
-import com.safb.rest.exceptions.*;
-import com.safb.rest.model.*;
-import com.safb.rest.repository.*;
-import com.safb.rest.response.*;
-import com.safb.rest.utils.*;
+import com.safb.rest.dto.UserCreateDto;
+import com.safb.rest.entity.User;
+import com.safb.rest.exceptions.UserServiceException;
+import com.safb.rest.model.UserModel;
+import com.safb.rest.repository.UsersRepository;
+import com.safb.rest.response.ErrorMessages;
+import com.safb.rest.utils.Utils;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-import org.modelmapper.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.security.crypto.password.*;
-import org.springframework.stereotype.*;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -61,7 +62,6 @@ public class UserServiceImpl implements UserService {
 
         String genPublicId = Utils.generateUserId(PUBLIC_ID_LENGTH);
 
-        //TODO encode password
         String encodedPassword = passwordEncoder.encode(userModel.getPassword());
         userModel.setPassword(encodedPassword);
 
