@@ -1,15 +1,15 @@
 package com.safb.rest.repository;
 
-import com.safb.rest.entity.*;
-import org.springframework.data.repository.*;
-import org.springframework.stereotype.*;
+import com.safb.rest.entity.User;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
-@Component
-public interface UsersRepository extends PagingAndSortingRepository<User, Integer>
-{
-  User findByUserId(Integer userId);
+@Repository
+public interface UsersRepository extends PagingAndSortingRepository<User, Integer> {
 
-  User findByPublicId(String publicId);
+    User findByUserId(Integer userId);
 
-  User findByEmail(String username);
+    User findByPublicId(String publicId);
+
+    User findByEmail(String username);
 }

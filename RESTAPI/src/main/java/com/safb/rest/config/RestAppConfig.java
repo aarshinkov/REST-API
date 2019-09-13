@@ -6,7 +6,6 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.safb.rest")
-public class RestAppConfig
-{
-  
+public class RestAppConfig {
+
 }

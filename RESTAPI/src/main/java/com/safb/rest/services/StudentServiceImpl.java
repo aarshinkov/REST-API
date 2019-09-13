@@ -6,20 +6,22 @@ import com.safb.rest.model.*;
 import com.safb.rest.repository.*;
 import com.safb.rest.response.*;
 import com.safb.rest.utils.*;
+
 import java.util.*;
+
 import org.springframework.beans.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 
 @Service
-public class StudentServiceImpl implements StudentService
-{
-  @Autowired
-  private StudentsRepository studentsRepository;
+public class StudentServiceImpl implements StudentService {
 
-  @Autowired
-  private Utils utils;
+    @Autowired
+    private StudentsRepository studentsRepository;
+
+    @Autowired
+    private Utils utils;
 
 //  @Override
 //  public List<StudentModel> getStudents(Integer page, Integer limit)

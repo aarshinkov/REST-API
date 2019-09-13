@@ -1,27 +1,23 @@
 package com.safb.rest.response;
 
-public class OperationStatus
-{
-  private String operationResult;
-  private String operationName;
+public class OperationStatus {
 
-  public String getOperationResult()
-  {
-    return operationResult;
-  }
+    private String operationResult;
+    private String operationName;
 
-  public void setOperationResult(String operationResult)
-  {
-    this.operationResult = operationResult;
-  }
+    public String getOperationResult() {
+        return operationResult;
+    }
 
-  public String getOperationName()
-  {
-    return operationName;
-  }
+    public void setOperationResult(String operationResult) {
+        this.operationResult = operationResult;
+    }
 
-  public void setOperationName(String operationName)
-  {
-    this.operationName = operationName;
-  }
+    public String getOperationName() {
+        return operationName;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
+    }
 }

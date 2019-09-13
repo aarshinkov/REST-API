@@ -7,110 +7,96 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable
-{
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
-  private Integer userId;
+public class User implements Serializable {
 
-  @NotNull
-  @Size(max = 50)
-  @Column(name = "public_id")
-  private String publicId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Integer userId;
 
-  @Email
-  @NotNull
-  @Size(min = 2, max = 200)
-  @Column(name = "email")
-  private String email;
+    @NotNull
+    @Size(max = 50)
+    @Column(name = "public_id")
+    private String publicId;
 
-  @NotNull
-  @Column(name = "password")
-  private String password;
+    @Email
+    @NotNull
+    @Size(min = 2, max = 200)
+    @Column(name = "email")
+    private String email;
 
-  @NotNull
-  @Size(min = 2, max = 50)
-  @Column(name = "first_name")
-  private String firstName;
+    @NotNull
+    @Column(name = "password")
+    private String password;
 
-  @NotNull
-  @Size(min = 2, max = 50)
-  @Column(name = "last_name")
+    @NotNull
+    @Size(min = 2, max = 50)
+    @Column(name = "first_name")
+    private String firstName;
 
-  private String lastName;
+    @NotNull
+    @Size(min = 2, max = 50)
+    @Column(name = "last_name")
 
-  @ManyToMany
-  @JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "rolename"))
-  private List<Role> roles = new ArrayList<>();
+    private String lastName;
 
-  public Integer getUserId()
-  {
-    return userId;
-  }
+    @ManyToMany
+    @JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "rolename"))
+    private List<Role> roles = new ArrayList<>();
 
-  public void setUserId(Integer userId)
-  {
-    this.userId = userId;
-  }
+    public Integer getUserId() {
+        return userId;
+    }
 
-  public String getPublicId()
-  {
-    return publicId;
-  }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-  public void setPublicId(String publicId)
-  {
-    this.publicId = publicId;
-  }
+    public String getPublicId() {
+        return publicId;
+    }
 
-  public String getEmail()
-  {
-    return email;
-  }
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
 
-  public void setEmail(String email)
-  {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public String getPassword()
-  {
-    return password;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setPassword(String password)
-  {
-    this.password = password;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public String getFirstName()
-  {
-    return firstName;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public void setFirstName(String firstName)
-  {
-    this.firstName = firstName;
-  }
+    public String getFirstName() {
+        return firstName;
+    }
 
-  public String getLastName()
-  {
-    return lastName;
-  }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-  public void setLastName(String lastName)
-  {
-    this.lastName = lastName;
-  }
+    public String getLastName() {
+        return lastName;
+    }
 
-  public List<Role> getRoles()
-  {
-    return roles;
-  }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-  public void setRoles(List<Role> roles)
-  {
-    this.roles = roles;
-  }
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 }

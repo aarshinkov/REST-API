@@ -1,9 +1,8 @@
 package com.safb.rest.exceptions;
 
-public class UserServiceException extends RuntimeException
-{
-  public UserServiceException(String message)
-  {
-    super(message);
-  }
+public class UserServiceException extends RuntimeException {
+
+    public UserServiceException(String message) {
+        super(message);
+    }
 }

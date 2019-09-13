@@ -1,13 +1,13 @@
 package com.safb.rest.repository;
 
-import com.safb.rest.entity.*;
-import org.springframework.data.repository.*;
-import org.springframework.stereotype.*;
+import com.safb.rest.entity.Student;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
-@Component
-public interface StudentsRepository extends PagingAndSortingRepository<Student, Integer>
-{
-  Student findByStudentId(Integer studentId);
+@Repository
+public interface StudentsRepository extends PagingAndSortingRepository<Student, Integer> {
 
-  Student findByPublicId(String publicId);
+    Student findByStudentId(Integer studentId);
+
+    Student findByPublicId(String publicId);
 }

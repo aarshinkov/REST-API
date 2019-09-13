@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.*;
 
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(securedEnabled = true)
-public class SecurityConfig
-{
+public class SecurityConfig {
+
 //  @Autowired
 //  private UserDetailsServiceImpl userDetailsService;
 }

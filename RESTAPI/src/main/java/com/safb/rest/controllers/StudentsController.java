@@ -5,17 +5,19 @@ import com.safb.rest.exceptions.*;
 import com.safb.rest.model.*;
 import com.safb.rest.response.*;
 import com.safb.rest.services.*;
+
 import java.util.*;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/students")
-public class StudentsController
-{
-  @Autowired
-  private StudentService studentService;
+public class StudentsController {
+
+    @Autowired
+    private StudentService studentService;
 
 //  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 //  public List<StudentModel> getStudents(@RequestParam(value = "page", defaultValue = "0") Integer page,

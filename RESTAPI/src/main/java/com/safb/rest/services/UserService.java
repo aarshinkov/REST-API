@@ -3,13 +3,14 @@ package com.safb.rest.services;
 import com.safb.rest.dto.*;
 import com.safb.rest.entity.*;
 import com.safb.rest.model.*;
+
 import java.util.*;
 
-public interface UserService
-{
-  List<User> getUsers(Integer page, Integer limit);
+public interface UserService {
 
-  User getUser(String publicId);
+    List<User> getUsers(Integer page, Integer limit);
 
-  UserCreateDto createUser(UserModel userModel);
+    User getUser(String publicId);
+
+    UserCreateDto createUser(UserModel userModel);
 }
