@@ -1,9 +1,12 @@
 package com.safb.rest.entity;
 
-import java.io.*;
-import java.util.*;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -37,7 +40,6 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 2, max = 50)
     @Column(name = "last_name")
-
     private String lastName;
 
     @ManyToMany

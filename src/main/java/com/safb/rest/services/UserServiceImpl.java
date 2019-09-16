@@ -1,5 +1,6 @@
 package com.safb.rest.services;
 
+import com.safb.rest.dao.UserDao;
 import com.safb.rest.dto.UserCreateDto;
 import com.safb.rest.entity.User;
 import com.safb.rest.exceptions.UserServiceException;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
