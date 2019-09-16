@@ -11,6 +11,6 @@ public class DemoController {
 
     @GetMapping(value = "/hello", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String sayHello() {
-        return "Hello World";
+        return "Hello World!";
     }
 }
