@@ -1,6 +1,6 @@
 package com.safb.rest.model;
 
-public class UserModel {
+public class UserCreateModel {
 
     private String email;
     private String firstName;

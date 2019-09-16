@@ -1,10 +1,11 @@
 package com.safb.rest.services;
 
-import com.safb.rest.dto.*;
-import com.safb.rest.entity.*;
-import com.safb.rest.model.*;
+import com.safb.rest.dto.UserCreateDto;
+import com.safb.rest.dto.UserUpdateDto;
+import com.safb.rest.entity.User;
+import com.safb.rest.model.UserCreateModel;
 
-import java.util.*;
+import java.util.List;
 
 public interface UserService {
 
@@ -12,5 +13,11 @@ public interface UserService {
 
     User getUser(String publicId);
 
-    UserCreateDto createUser(UserModel userModel);
+    boolean isUserExistWithEmail(String email);
+
+    boolean isUserExistWithPublicId(String publicId);
+
+    UserCreateDto createUser(UserCreateModel userCreateModel);
+
+    UserUpdateDto updateUser(UserUpdateDto userUpdateDto);
 }

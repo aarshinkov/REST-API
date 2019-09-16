@@ -1,20 +1,22 @@
 package com.safb.rest.controllers;
 
-import com.safb.rest.dto.*;
-import com.safb.rest.entity.*;
-import com.safb.rest.exceptions.*;
-import com.safb.rest.model.*;
-import com.safb.rest.response.*;
-import com.safb.rest.services.*;
-
-import java.util.*;
-import javax.validation.*;
-
-import org.modelmapper.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
-import org.springframework.validation.*;
+import com.safb.rest.dto.UserCreateDto;
+import com.safb.rest.dto.UserDto;
+import com.safb.rest.dto.UserUpdateDto;
+import com.safb.rest.entity.User;
+import com.safb.rest.exceptions.UserServiceException;
+import com.safb.rest.model.UserCreateModel;
+import com.safb.rest.response.ErrorMessages;
+import com.safb.rest.services.UserService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/users")
@@ -58,13 +60,26 @@ public class UsersController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserCreateDto createUser(@Valid @RequestBody UserModel userModel, BindingResult bindingResult) {
+    public UserCreateDto createUser(@Valid @RequestBody UserCreateModel userCreateModel, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new UserServiceException(ErrorMessages.FIELD_NOT_MATCHING_CRITERIA.getErrorMessage());
         }
 
-        UserCreateDto createdUser = userService.createUser(userModel);
+        if (userService.isUserExistWithEmail(userCreateModel.getEmail())) {
+            throw new UserServiceException(ErrorMessages.USER_EXISTS.getErrorMessage());
+        }
 
-        return createdUser;
+        return userService.createUser(userCreateModel);
+    }
+
+    @PutMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserUpdateDto updateUser(@RequestBody UserUpdateDto userUpdateDto) {
+
+        if (!userService.isUserExistWithPublicId(userUpdateDto.getPublicId())) {
+            throw new UserServiceException(ErrorMessages.USER_NO_EXIST.getErrorMessage());
+        }
+
+        return userService.updateUser(userUpdateDto);
     }
 }

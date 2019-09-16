@@ -2,9 +2,10 @@ package com.safb.rest.services;
 
 import com.safb.rest.dao.UserDao;
 import com.safb.rest.dto.UserCreateDto;
+import com.safb.rest.dto.UserUpdateDto;
 import com.safb.rest.entity.User;
 import com.safb.rest.exceptions.UserServiceException;
-import com.safb.rest.model.UserModel;
+import com.safb.rest.model.UserCreateModel;
 import com.safb.rest.repository.UsersRepository;
 import com.safb.rest.response.ErrorMessages;
 import com.safb.rest.utils.Utils;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -59,24 +63,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserCreateDto createUser(UserModel userModel) {
-        if (userModel == null) {
+    public boolean isUserExistWithEmail(String email) {
+
+        User checkUser = usersRepository.findByEmail(email);
+
+        return checkUser != null;
+    }
+
+    @Override
+    public boolean isUserExistWithPublicId(String publicId) {
+
+        User checkUser = usersRepository.findByPublicId(publicId);
+
+        return checkUser != null;
+    }
+
+    @Override
+    public UserCreateDto createUser(UserCreateModel userCreateModel) {
+        if (userCreateModel == null) {
             throw new UserServiceException(ErrorMessages.OBJECT_EMPTY.getErrorMessage());
         }
 
         String genPublicId = Utils.generateUserId(PUBLIC_ID_LENGTH);
 
-        String encodedPassword = passwordEncoder.encode(userModel.getPassword());
-        userModel.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(userCreateModel.getPassword());
+        userCreateModel.setPassword(encodedPassword);
 
-        ModelMapper modelMapper = new ModelMapper();
-
-        User user = modelMapper.map(userModel, User.class);
+        User user = modelMapper.map(userCreateModel, User.class);
         user.setPublicId(genPublicId);
-        usersRepository.save(user);
+//        usersRepository.save(user);
 
         UserCreateDto userCreateDto = modelMapper.map(user, UserCreateDto.class);
 
         return userCreateDto;
+    }
+
+    @Override
+    public UserUpdateDto updateUser(UserUpdateDto userUpdateDto) {
+        //TODO To be implemented
+        return userUpdateDto;
     }
 }

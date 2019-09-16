@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.safb.rest.response;
 
 public enum ErrorMessages {
@@ -17,7 +12,9 @@ public enum ErrorMessages {
     COULD_NOT_DELETE_RECORD("Could not delete record"),
     EMAIL_ADDRESS_NOT_VERIFIED("Email addres could not be verified"),
     FIELD_NOT_MATCHING_CRITERIA("Some field/s does not match the required criteria"),
-    OBJECT_EMPTY("The given object is null or empty");
+    OBJECT_EMPTY("The given object is null or empty"),
+    USER_EXISTS("This user already exists"),
+    USER_NO_EXIST("The user does not exist");
 
     private String errorMessage;
 
