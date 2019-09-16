@@ -1,9 +1,10 @@
 package com.safb.rest.config;
 
-import org.springframework.context.annotation.*;
-import org.thymeleaf.spring5.*;
-import org.thymeleaf.spring5.templateresolver.*;
-import org.thymeleaf.spring5.view.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
 public class ViewConfig {
