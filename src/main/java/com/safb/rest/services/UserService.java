@@ -3,6 +3,7 @@ package com.safb.rest.services;
 import com.safb.rest.dto.UserCreateDto;
 import com.safb.rest.dto.UserUpdateDto;
 import com.safb.rest.entity.User;
+import com.safb.rest.exceptions.UserServiceException;
 import com.safb.rest.model.UserCreateModel;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface UserService {
     UserCreateDto createUser(UserCreateModel userCreateModel);
 
     UserUpdateDto updateUser(UserUpdateDto userUpdateDto);
+
+    void deleteUser(String publicId) throws UserServiceException;
 }

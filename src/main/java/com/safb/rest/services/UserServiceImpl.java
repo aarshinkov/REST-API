@@ -91,16 +91,27 @@ public class UserServiceImpl implements UserService {
 
         User user = modelMapper.map(userCreateModel, User.class);
         user.setPublicId(genPublicId);
-//        usersRepository.save(user);
+        usersRepository.save(user);
 
-        UserCreateDto userCreateDto = modelMapper.map(user, UserCreateDto.class);
-
-        return userCreateDto;
+        return modelMapper.map(user, UserCreateDto.class);
     }
 
     @Override
     public UserUpdateDto updateUser(UserUpdateDto userUpdateDto) {
-        //TODO To be implemented
+        if (!userDao.updateUser(userUpdateDto)) {
+            throw new UserServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
+        }
         return userUpdateDto;
+    }
+
+    @Override
+    public void deleteUser(String publicId) throws UserServiceException {
+        User user = usersRepository.findByPublicId(publicId);
+
+        if (user == null) {
+            throw new UserServiceException(ErrorMessages.OBJECT_EMPTY.getErrorMessage());
+        }
+
+        usersRepository.delete(user);
     }
 }

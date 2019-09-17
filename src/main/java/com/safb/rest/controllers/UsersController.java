@@ -7,6 +7,9 @@ import com.safb.rest.entity.User;
 import com.safb.rest.exceptions.UserServiceException;
 import com.safb.rest.model.UserCreateModel;
 import com.safb.rest.response.ErrorMessages;
+import com.safb.rest.response.OperationNames;
+import com.safb.rest.response.OperationStatus;
+import com.safb.rest.response.OperationStatuses;
 import com.safb.rest.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +75,7 @@ public class UsersController {
         return userService.createUser(userCreateModel);
     }
 
-    @PutMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+    @PatchMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserUpdateDto updateUser(@RequestBody UserUpdateDto userUpdateDto) {
 
@@ -81,5 +84,27 @@ public class UsersController {
         }
 
         return userService.updateUser(userUpdateDto);
+    }
+
+    @DeleteMapping(value = "/{publicId}", consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public OperationStatus deleteUser(@PathVariable("publicId") String publicId) {
+
+        if (!userService.isUserExistWithPublicId(publicId)) {
+            throw new UserServiceException(ErrorMessages.USER_NO_EXIST.getErrorMessage());
+        }
+
+        OperationStatus returnValue = new OperationStatus();
+
+        returnValue.setOperationName(OperationNames.DELETE.name());
+
+        try {
+            userService.deleteUser(publicId);
+            returnValue.setOperationResult(OperationStatuses.SUCCESS.name());
+            return returnValue;
+        } catch (UserServiceException use) {
+            returnValue.setOperationResult(OperationStatuses.ERROR.name());
+            return returnValue;
+        }
     }
 }

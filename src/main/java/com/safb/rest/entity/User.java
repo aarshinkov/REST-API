@@ -43,7 +43,7 @@ public class User implements Serializable {
     private String lastName;
 
     @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "rolename"))
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "rolename"))
     private List<Role> roles = new ArrayList<>();
 
     public Integer getUserId() {
