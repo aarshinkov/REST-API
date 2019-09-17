@@ -1,7 +1,5 @@
 package com.safb.rest.config;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,11 +13,11 @@ public class BeanConfig {
         return new BCryptPasswordEncoder(12);
     }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        modelMapper.validate();
-        return modelMapper;
-    }
+//    @Bean
+//    public ModelMapper modelMapper() {
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        modelMapper.validate();
+//        return modelMapper;
+//    }
 }

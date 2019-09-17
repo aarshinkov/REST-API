@@ -31,9 +31,6 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -46,9 +43,7 @@ public class UserServiceImpl implements UserService {
 
         Page<User> usersPage = usersRepository.findAll(pageableRequest);
 
-        List<User> usersList = usersPage.getContent();
-
-        return usersList;
+        return usersPage.getContent();
     }
 
     @Override
@@ -89,8 +84,10 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(userCreateModel.getPassword());
         userCreateModel.setPassword(encodedPassword);
 
+        ModelMapper modelMapper = new ModelMapper();
         User user = modelMapper.map(userCreateModel, User.class);
         user.setPublicId(genPublicId);
+
         usersRepository.save(user);
 
         return modelMapper.map(user, UserCreateDto.class);
