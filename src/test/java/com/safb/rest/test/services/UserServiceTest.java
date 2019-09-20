@@ -26,142 +26,149 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = RestAppConfig.class)
 @WebAppConfiguration
-public class UserServiceTest {
+public class UserServiceTest
+{
 
-    @InjectMocks
-    private UserServiceImpl userService;
+  @InjectMocks
+  private UserServiceImpl userService;
 
-    @Mock
-    private UsersRepository usersRepository;
+  @Mock
+  private UsersRepository usersRepository;
 
-    @Mock
-    private UserDao userDao;
+  @Mock
+  private UserDao userDao;
 
-    @Mock
-    private PasswordEncoder passwordEncoder;
+  @Mock
+  private PasswordEncoder passwordEncoder;
 
-    @Mock
-    private ModelMapper modelMapper;
+  @Mock
+  private ModelMapper modelMapper;
 
-    private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Before
+  public void setup()
+  {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    // GET
+  // GET
+  @Test
+  public void test_get_user_by_public_id()
+  {
+    String publicId = "irfkrIfmsfoFoimFoiF90FokODDfjm";
 
-    @Test
-    public void test_get_user_by_public_id() {
-        String publicId = "irfkrIfmsfoFoimFoiF90FokODDfjm";
+    User user = new User();
+    user.setUserId(1);
+    user.setPublicId(publicId);
+    user.setEmail("john.doe@gmail.com");
 
-        User user = new User();
-        user.setUserId(1);
-        user.setPublicId(publicId);
-        user.setEmail("john.doe@gmail.com");
+    Mockito.when(usersRepository.findByPublicId(publicId)).thenReturn(user);
 
-        Mockito.when(usersRepository.findByPublicId(publicId)).thenReturn(user);
+    User returnedUser = userService.getUser(publicId);
 
-        User returnedUser = userService.getUser(publicId);
+    Assert.assertEquals(Integer.valueOf(1), returnedUser.getUserId());
+    Assert.assertEquals("irfkrIfmsfoFoimFoiF90FokODDfjm", returnedUser.getPublicId());
+    Assert.assertEquals("john.doe@gmail.com", returnedUser.getEmail());
+  }
 
-        Assert.assertEquals(Integer.valueOf(1), returnedUser.getUserId());
-        Assert.assertEquals("irfkrIfmsfoFoimFoiF90FokODDfjm", returnedUser.getPublicId());
-        Assert.assertEquals("john.doe@gmail.com", returnedUser.getEmail());
-    }
+  @Test(expected = UserServiceException.class)
+  public void test_get_user_pass_null_expect_exception()
+  {
+    userService.getUser(null);
+  }
 
-    @Test(expected = UserServiceException.class)
-    public void test_get_user_pass_null_expect_exception() {
-        userService.getUser(null);
-    }
+  // CREATE
+  @Test(expected = UserServiceException.class)
+  public void test_create_user_pass_null_expect_exception()
+  {
+    userService.createUser(null);
+  }
 
-    // CREATE
+  @Test
+  public void test_create_user()
+  {
+    User user = new User();
+    user.setPublicId("ufKiFmldOelwdspS39Soe9rRF3dvcd");
+    user.setEmail("john.doe@test.com");
+    user.setFirstName("John");
+    user.setLastName("Doe");
+    user.setPassword("Test-1234");
 
-    @Test(expected = UserServiceException.class)
-    public void test_create_user_pass_null_expect_exception() {
-        userService.createUser(null);
-    }
+    UserCreateModel userCreateModel = new UserCreateModel();
+    userCreateModel.setEmail("john.doe@test.com");
+    userCreateModel.setPassword("Test-1234");
 
-    @Test
-    public void test_create_user() {
-        User user = new User();
-        user.setPublicId("ufKiFmldOelwdspS39Soe9rRF3dvcd");
-        user.setEmail("john.doe@test.com");
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setPassword("Test-1234");
+    UserCreateDto userCreateDto = userService.createUser(userCreateModel);
 
-        UserCreateModel userCreateModel = new UserCreateModel();
-        userCreateModel.setEmail("john.doe@test.com");
-        userCreateModel.setPassword("Test-1234");
+    Assert.assertNotNull(userCreateDto.getEmail());
+    Assert.assertNotNull(userCreateDto.getPublicId());
+    Assert.assertNotNull(user.getPassword());
+  }
 
-        UserCreateDto userCreateDto = userService.createUser(userCreateModel);
+  // UPDATE
+  @Test(expected = UserServiceException.class)
+  public void test_update_user_pass_null_expect_exception()
+  {
+    Mockito.when(userDao.updateUser(null)).thenReturn(false);
 
-        Assert.assertNotNull(userCreateDto.getEmail());
-        Assert.assertNotNull(userCreateDto.getPublicId());
-        Assert.assertNotNull(user.getPassword());
-    }
+    userService.updateUser(null);
+  }
 
-    // UPDATE
+  // DELETE
+  @Test(expected = UserServiceException.class)
+  public void test_delete_pass_null_expect_exception()
+  {
+    userService.deleteUser(null);
+  }
 
-    @Test(expected = UserServiceException.class)
-    public void test_update_user_pass_null_expect_exception() {
-        Mockito.when(userDao.updateUser(null)).thenReturn(false);
+  // OTHER
+  @Test
+  public void test_is_user_exist_with_invalid_email_return_false()
+  {
+    String email = "test@gmail.com";
 
-        userService.updateUser(null);
-    }
+    Mockito.when(usersRepository.findByEmail(email)).thenReturn(null);
 
-    // DELETE
+    Assert.assertFalse(userService.isUserExistWithEmail(email));
+  }
 
-    @Test(expected = UserServiceException.class)
-    public void test_delete_pass_null_expect_exception() {
-        userService.deleteUser(null);
-    }
+  @Test
+  public void test_is_user_exist_with_valid_email_return_true()
+  {
+    String email = "test@gmail.com";
 
-    // OTHER
+    User returnedUser = new User();
+    returnedUser.setEmail(email);
 
-    @Test
-    public void test_is_user_exist_with_invalid_email_return_false() {
-        String email = "test@gmail.com";
+    Mockito.when(usersRepository.findByEmail(email)).thenReturn(returnedUser);
 
-        Mockito.when(usersRepository.findByEmail(email)).thenReturn(null);
+    Assert.assertTrue(userService.isUserExistWithEmail(email));
+    Assert.assertEquals(email, returnedUser.getEmail());
+  }
 
-        Assert.assertFalse(userService.isUserExistWithEmail(email));
-    }
+  @Test
+  public void test_is_user_exist_with_invalid_public_id_return_false()
+  {
+    String publicId = "irfkrIfmsfoFoimFoiF90FokODDfjm";
 
-    @Test
-    public void test_is_user_exist_with_valid_email_return_true() {
-        String email = "test@gmail.com";
+    Mockito.when(usersRepository.findByPublicId(publicId)).thenReturn(null);
 
-        User returnedUser = new User();
-        returnedUser.setEmail(email);
+    Assert.assertFalse(userService.isUserExistWithPublicId(publicId));
+  }
 
-        Mockito.when(usersRepository.findByEmail(email)).thenReturn(returnedUser);
+  @Test
+  public void test_is_user_exist_with_valid_public_id_return_true()
+  {
+    String publicId = "irfkrIfmsfoFoimFoiF90FokODDfjm";
 
-        Assert.assertTrue(userService.isUserExistWithEmail(email));
-        Assert.assertEquals(email, returnedUser.getEmail());
-    }
+    User returnedUser = new User();
+    returnedUser.setPublicId(publicId);
 
-    @Test
-    public void test_is_user_exist_with_invalid_public_id_return_false() {
-        String publicId = "irfkrIfmsfoFoimFoiF90FokODDfjm";
+    Mockito.when(usersRepository.findByPublicId(publicId)).thenReturn(returnedUser);
 
-        Mockito.when(usersRepository.findByPublicId(publicId)).thenReturn(null);
+    Assert.assertTrue(userService.isUserExistWithPublicId(publicId));
+    Assert.assertEquals(publicId, returnedUser.getPublicId());
 
-        Assert.assertFalse(userService.isUserExistWithPublicId(publicId));
-    }
-
-    @Test
-    public void test_is_user_exist_with_valid_public_id_return_true() {
-        String publicId = "irfkrIfmsfoFoimFoiF90FokODDfjm";
-
-        User returnedUser = new User();
-        returnedUser.setPublicId(publicId);
-
-        Mockito.when(usersRepository.findByPublicId(publicId)).thenReturn(returnedUser);
-
-        Assert.assertTrue(userService.isUserExistWithPublicId(publicId));
-        Assert.assertEquals(publicId, returnedUser.getPublicId());
-
-    }
+  }
 }

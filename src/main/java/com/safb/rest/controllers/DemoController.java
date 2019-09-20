@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/demo")
-public class DemoController {
+public class DemoController
+{
 
-    @GetMapping(value = "/hello", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String sayHello() {
-        return "Hello World!";
-    }
+  @GetMapping(value = "/hello", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public String sayHello()
+  {
+    return "Hello World!";
+  }
 }

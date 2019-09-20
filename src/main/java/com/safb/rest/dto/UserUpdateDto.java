@@ -1,32 +1,38 @@
 package com.safb.rest.dto;
 
-public class UserUpdateDto {
+public class UserUpdateDto
+{
+  private String publicId;
+  private String firstName;
+  private String lastName;
 
-    private String publicId;
-    private String firstName;
-    private String lastName;
+  public String getPublicId()
+  {
+    return publicId;
+  }
 
-    public String getPublicId() {
-        return publicId;
-    }
+  public void setPublicId(String publicId)
+  {
+    this.publicId = publicId;
+  }
 
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
-    }
+  public String getFirstName()
+  {
+    return firstName;
+  }
 
-    public String getFirstName() {
-        return firstName;
-    }
+  public void setFirstName(String firstName)
+  {
+    this.firstName = firstName;
+  }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  public String getLastName()
+  {
+    return lastName;
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public void setLastName(String lastName)
+  {
+    this.lastName = lastName;
+  }
 }

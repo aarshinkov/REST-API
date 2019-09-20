@@ -19,28 +19,31 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = RestAppConfig.class)
 @WebAppConfiguration
-public class HomeControllerTest {
+public class HomeControllerTest
+{
 
-    @Autowired
-    private WebApplicationContext wac;
+  @Autowired
+  private WebApplicationContext wac;
 
-    private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+  @Before
+  public void setup()
+  {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+  }
 
-    @Test
-    public void homeTest() throws Exception {
-        ResultMatcher ok = MockMvcResultMatchers.status().isOk();
-        ResultMatcher view = MockMvcResultMatchers.view().name("home");
+  @Test
+  public void homeTest() throws Exception
+  {
+    ResultMatcher ok = MockMvcResultMatchers.status().is3xxRedirection();
+    ResultMatcher view = MockMvcResultMatchers.view().name("redirect:/swagger-ui.html");
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("");
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("");
 
-        this.mockMvc.perform(builder)
-                .andExpect(ok)
-                .andExpect(view)
-                .andReturn();
-    }
+    this.mockMvc.perform(builder)
+            .andExpect(ok)
+            .andExpect(view)
+            .andReturn();
+  }
 }

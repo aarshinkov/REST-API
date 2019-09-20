@@ -4,10 +4,12 @@ import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class HomeController {
+public class HomeController
+{
 
-    @GetMapping(value = "/")
-    public String home() {
-        return "home";
-    }
+  @GetMapping(value = "/")
+  public String home()
+  {
+    return "redirect:/swagger-ui.html";
+  }
 }

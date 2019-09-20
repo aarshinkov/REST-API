@@ -13,18 +13,20 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = RestAppConfig.class)
 @WebAppConfiguration
-public class UsersControllerTest {
+public class UsersControllerTest
+{
 
-    private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Before
+  public void setup()
+  {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Test
-    public void testing() {
+  @Test
+  public void testing()
+  {
 
-    }
-
+  }
 }

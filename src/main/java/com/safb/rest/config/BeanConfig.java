@@ -6,12 +6,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class BeanConfig {
+public class BeanConfig
+{
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder()
+  {
+    return new BCryptPasswordEncoder(12);
+  }
 
 //    @Bean
 //    public ModelMapper modelMapper() {

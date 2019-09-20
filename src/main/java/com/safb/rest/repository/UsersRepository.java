@@ -5,11 +5,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsersRepository extends PagingAndSortingRepository<User, Integer> {
+public interface UsersRepository extends PagingAndSortingRepository<User, Integer>
+{
+  User findByUserId(Integer userId);
 
-    User findByUserId(Integer userId);
+  User findByPublicId(String publicId);
 
-    User findByPublicId(String publicId);
-
-    User findByEmail(String username);
+  User findByEmail(String username);
 }

@@ -9,27 +9,32 @@ import java.sql.PreparedStatement;
 import java.util.Objects;
 
 @Service
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements UserDao
+{
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public boolean updateUser(UserUpdateDto userUpdateDto) {
+  @Override
+  public boolean updateUser(UserUpdateDto userUpdateDto)
+  {
 
-        try {
+    try
+    {
 
-            String sql = "UPDATE `users` SET `first_name` = ?, `last_name` = ? WHERE `public_id` = ?";
-            PreparedStatement ps = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().prepareCall(sql);
-            ps.setString(1, userUpdateDto.getFirstName());
-            ps.setString(2, userUpdateDto.getLastName());
-            ps.setString(3, userUpdateDto.getPublicId());
+      String sql = "UPDATE `users` SET `first_name` = ?, `last_name` = ? WHERE `public_id` = ?";
+      PreparedStatement ps = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().prepareCall(sql);
+      ps.setString(1, userUpdateDto.getFirstName());
+      ps.setString(2, userUpdateDto.getLastName());
+      ps.setString(3, userUpdateDto.getPublicId());
 
-            ps.executeUpdate();
+      ps.executeUpdate();
 
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+      return true;
     }
+    catch (Exception e)
+    {
+      return false;
+    }
+  }
 }

@@ -20,95 +20,107 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService
+{
+  private static final Integer PUBLIC_ID_LENGTH = 30;
 
-    private static final Integer PUBLIC_ID_LENGTH = 30;
+  @Autowired
+  private UsersRepository usersRepository;
 
-    @Autowired
-    private UsersRepository usersRepository;
+  @Autowired
+  private UserDao userDao;
 
-    @Autowired
-    private UserDao userDao;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public List<User> getUsers(Integer page, Integer limit) {
-        if (page > 0) {
-            page--;
-        }
-
-        Pageable pageableRequest = PageRequest.of(page, limit);
-
-        Page<User> usersPage = usersRepository.findAll(pageableRequest);
-
-        return usersPage.getContent();
+  @Override
+  public List<User> getUsers(Integer page, Integer limit)
+  {
+    if (page > 0)
+    {
+      page--;
     }
 
-    @Override
-    public User getUser(String publicId) {
-        User user = usersRepository.findByPublicId(publicId);
+    Pageable pageableRequest = PageRequest.of(page, limit);
 
-        if (user == null) {
-            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-        }
+    Page<User> usersPage = usersRepository.findAll(pageableRequest);
 
-        return user;
+    return usersPage.getContent();
+  }
+
+  @Override
+  public User getUser(String publicId)
+  {
+    User user = usersRepository.findByPublicId(publicId);
+
+    if (user == null)
+    {
+      throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
     }
 
-    @Override
-    public boolean isUserExistWithEmail(String email) {
+    return user;
+  }
 
-        User checkUser = usersRepository.findByEmail(email);
+  @Override
+  public boolean isUserExistWithEmail(String email)
+  {
 
-        return checkUser != null;
+    User checkUser = usersRepository.findByEmail(email);
+
+    return checkUser != null;
+  }
+
+  @Override
+  public boolean isUserExistWithPublicId(String publicId)
+  {
+
+    User checkUser = usersRepository.findByPublicId(publicId);
+
+    return checkUser != null;
+  }
+
+  @Override
+  public UserCreateDto createUser(UserCreateModel userCreateModel)
+  {
+    if (userCreateModel == null)
+    {
+      throw new UserServiceException(ErrorMessages.OBJECT_EMPTY.getErrorMessage());
     }
 
-    @Override
-    public boolean isUserExistWithPublicId(String publicId) {
+    String genPublicId = Utils.generateUserId(PUBLIC_ID_LENGTH);
 
-        User checkUser = usersRepository.findByPublicId(publicId);
+    String encodedPassword = passwordEncoder.encode(userCreateModel.getPassword());
+    userCreateModel.setPassword(encodedPassword);
 
-        return checkUser != null;
+    ModelMapper modelMapper = new ModelMapper();
+    User user = modelMapper.map(userCreateModel, User.class);
+    user.setPublicId(genPublicId);
+
+    usersRepository.save(user);
+
+    return modelMapper.map(user, UserCreateDto.class);
+  }
+
+  @Override
+  public UserUpdateDto updateUser(UserUpdateDto userUpdateDto)
+  {
+    if (!userDao.updateUser(userUpdateDto))
+    {
+      throw new UserServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
+    }
+    return userUpdateDto;
+  }
+
+  @Override
+  public void deleteUser(String publicId) throws UserServiceException
+  {
+    User user = usersRepository.findByPublicId(publicId);
+
+    if (user == null)
+    {
+      throw new UserServiceException(ErrorMessages.OBJECT_EMPTY.getErrorMessage());
     }
 
-    @Override
-    public UserCreateDto createUser(UserCreateModel userCreateModel) {
-        if (userCreateModel == null) {
-            throw new UserServiceException(ErrorMessages.OBJECT_EMPTY.getErrorMessage());
-        }
-
-        String genPublicId = Utils.generateUserId(PUBLIC_ID_LENGTH);
-
-        String encodedPassword = passwordEncoder.encode(userCreateModel.getPassword());
-        userCreateModel.setPassword(encodedPassword);
-
-        ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(userCreateModel, User.class);
-        user.setPublicId(genPublicId);
-
-        usersRepository.save(user);
-
-        return modelMapper.map(user, UserCreateDto.class);
-    }
-
-    @Override
-    public UserUpdateDto updateUser(UserUpdateDto userUpdateDto) {
-        if (!userDao.updateUser(userUpdateDto)) {
-            throw new UserServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
-        }
-        return userUpdateDto;
-    }
-
-    @Override
-    public void deleteUser(String publicId) throws UserServiceException {
-        User user = usersRepository.findByPublicId(publicId);
-
-        if (user == null) {
-            throw new UserServiceException(ErrorMessages.OBJECT_EMPTY.getErrorMessage());
-        }
-
-        usersRepository.delete(user);
-    }
+    usersRepository.delete(user);
+  }
 }

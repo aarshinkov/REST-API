@@ -22,28 +22,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = RestAppConfig.class)
 @WebAppConfiguration
-public class DemoControllerTest {
+public class DemoControllerTest
+{
 
-    @Autowired
-    private WebApplicationContext wac;
+  @Autowired
+  private WebApplicationContext wac;
 
-    private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+  @Before
+  public void setup()
+  {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+  }
 
-    @Test
-    public void demo_test() throws Exception {
-        ResultMatcher ok = MockMvcResultMatchers.status().isOk();
-        ResultMatcher content = content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+  @Test
+  public void demo_test() throws Exception
+  {
+    ResultMatcher ok = MockMvcResultMatchers.status().isOk();
+    ResultMatcher content = content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/demo/hello");
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/demo/hello");
 
-        this.mockMvc.perform(builder)
-                .andExpect(ok)
-                .andExpect(content)
-                .andExpect(content().string("Hello World!"));
-    }
+    this.mockMvc.perform(builder)
+            .andExpect(ok)
+            .andExpect(content)
+            .andExpect(content().string("Hello World!"));
+  }
 }

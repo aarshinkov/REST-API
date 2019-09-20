@@ -13,59 +13,69 @@ import org.springframework.transaction.*;
 import org.springframework.transaction.annotation.*;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"com.safb.rest.repository"})
+@EnableJpaRepositories(basePackages =
+{
+  "com.safb.rest.repository"
+})
 @EnableTransactionManagement
-public class DatabaseConfig {
+public class DatabaseConfig
+{
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
-        dataSource.setUsername("test_user");
-        dataSource.setPassword("Test-1234");
+  @Bean
+  public DataSource dataSource()
+  {
+    DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+    dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
+    dataSource.setUsername("test_user");
+    dataSource.setPassword("Test-1234");
 
-        return dataSource;
-    }
+    return dataSource;
+  }
 
-    @Bean
-    public HibernateJpaVendorAdapter jpaVendorAdapter() {
-        HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        return jpaVendorAdapter;
-    }
+  @Bean
+  public HibernateJpaVendorAdapter jpaVendorAdapter()
+  {
+    HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+    return jpaVendorAdapter;
+  }
 
-    private Properties jpaProperties() {
-        Properties jpaProperties = new Properties();
-        jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        jpaProperties.setProperty("hibernate.show_sql", "true");
-        jpaProperties.setProperty("hibernate.format_sql", "true");
+  private Properties jpaProperties()
+  {
+    Properties jpaProperties = new Properties();
+    jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+    jpaProperties.setProperty("hibernate.show_sql", "true");
+    jpaProperties.setProperty("hibernate.format_sql", "true");
 
-        return jpaProperties;
-    }
+    return jpaProperties;
+  }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+  @Bean
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory()
+  {
+    LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
-        entityManagerFactory.setDataSource(dataSource());
-        entityManagerFactory.setPackagesToScan("com.safb.rest.entity");
-        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter());
-        entityManagerFactory.setJpaProperties(jpaProperties());
+    entityManagerFactory.setDataSource(dataSource());
+    entityManagerFactory.setPackagesToScan("com.safb.rest.entity");
+    entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter());
+    entityManagerFactory.setJpaProperties(jpaProperties());
 
-        return entityManagerFactory;
-    }
+    return entityManagerFactory;
+  }
 
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.setDataSource(dataSource());
-        return jdbcTemplate;
-    }
+  @Bean
+  public JdbcTemplate jdbcTemplate()
+  {
+    JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    jdbcTemplate.setDataSource(dataSource());
+    return jdbcTemplate;
+  }
 
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-        return transactionManager;
-    }
+  @Bean
+  public PlatformTransactionManager transactionManager()
+  {
+    JpaTransactionManager transactionManager = new JpaTransactionManager();
+    transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+    return transactionManager;
+  }
 }

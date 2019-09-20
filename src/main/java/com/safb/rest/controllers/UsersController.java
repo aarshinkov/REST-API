@@ -23,88 +23,122 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/users")
-public class UsersController {
+public class UsersController
+{
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDto> getUsers(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "limit", defaultValue = "5") Integer limit) {
-        List<User> users = userService.getUsers(page, limit);
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<UserDto> getUsers(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "limit", defaultValue = "5") Integer limit)
+  {
+    List<User> users = userService.getUsers(page, limit);
 
-        List<UserDto> userDtos = new ArrayList<>();
+    List<UserDto> userDtos = new ArrayList<>();
 
-        ModelMapper modelMapper = new ModelMapper();
+    ModelMapper modelMapper = new ModelMapper();
 
-        for (User user : users) {
-            UserDto userDto = modelMapper.map(user, UserDto.class);
+    for (User user : users)
+    {
+      UserDto userDto = modelMapper.map(user, UserDto.class);
 
-            if (!userDtos.contains(userDto)) {
-                userDtos.add(userDto);
-            }
-        }
-
-        return userDtos;
+      if (!userDtos.contains(userDto))
+      {
+        userDtos.add(userDto);
+      }
     }
 
-    @GetMapping(value = "/{publicId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto getUser(@PathVariable("publicId") String publicId) {
-        User user = userService.getUser(publicId);
+    return userDtos;
+  }
 
-        if (user == null) {
-            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-        }
+  @GetMapping(value = "/{publicId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public UserDto getUser(@PathVariable("publicId") String publicId)
+  {
+    User user = userService.getUser(publicId);
 
-        ModelMapper modelMapper = new ModelMapper();
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-
-        return userDto;
+    if (user == null)
+    {
+      throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserCreateDto createUser(@Valid @RequestBody UserCreateModel userCreateModel, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new UserServiceException(ErrorMessages.FIELD_NOT_MATCHING_CRITERIA.getErrorMessage());
-        }
+    ModelMapper modelMapper = new ModelMapper();
+    UserDto userDto = modelMapper.map(user, UserDto.class);
 
-        if (userService.isUserExistWithEmail(userCreateModel.getEmail())) {
-            throw new UserServiceException(ErrorMessages.USER_EXISTS.getErrorMessage());
-        }
+    return userDto;
+  }
 
-        return userService.createUser(userCreateModel);
+  @PostMapping(consumes =
+  {
+    MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE
+  },
+          produces =
+          {
+            MediaType.APPLICATION_JSON_VALUE
+          })
+  public UserCreateDto createUser(@Valid @RequestBody UserCreateModel userCreateModel, BindingResult bindingResult)
+  {
+    if (bindingResult.hasErrors())
+    {
+      throw new UserServiceException(ErrorMessages.FIELD_NOT_MATCHING_CRITERIA.getErrorMessage());
     }
 
-    @PatchMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserUpdateDto updateUser(@RequestBody UserUpdateDto userUpdateDto) {
-
-        if (!userService.isUserExistWithPublicId(userUpdateDto.getPublicId())) {
-            throw new UserServiceException(ErrorMessages.USER_NO_EXIST.getErrorMessage());
-        }
-
-        return userService.updateUser(userUpdateDto);
+    if (userService.isUserExistWithEmail(userCreateModel.getEmail()))
+    {
+      throw new UserServiceException(ErrorMessages.USER_EXISTS.getErrorMessage());
     }
 
-    @DeleteMapping(value = "/{publicId}", consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public OperationStatus deleteUser(@PathVariable("publicId") String publicId) {
+    return userService.createUser(userCreateModel);
+  }
 
-        if (!userService.isUserExistWithPublicId(publicId)) {
-            throw new UserServiceException(ErrorMessages.USER_NO_EXIST.getErrorMessage());
-        }
+  @PatchMapping(consumes =
+  {
+    MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE
+  },
+          produces =
+          {
+            MediaType.APPLICATION_JSON_VALUE
+          })
+  public UserUpdateDto updateUser(@RequestBody UserUpdateDto userUpdateDto)
+  {
 
-        OperationStatus returnValue = new OperationStatus();
-
-        returnValue.setOperationName(OperationNames.DELETE.name());
-
-        try {
-            userService.deleteUser(publicId);
-            returnValue.setOperationResult(OperationStatuses.SUCCESS.name());
-            return returnValue;
-        } catch (UserServiceException use) {
-            returnValue.setOperationResult(OperationStatuses.ERROR.name());
-            return returnValue;
-        }
+    if (!userService.isUserExistWithPublicId(userUpdateDto.getPublicId()))
+    {
+      throw new UserServiceException(ErrorMessages.USER_NO_EXIST.getErrorMessage());
     }
+
+    return userService.updateUser(userUpdateDto);
+  }
+
+  @DeleteMapping(value = "/{publicId}", consumes =
+  {
+    MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE
+  },
+          produces =
+          {
+            MediaType.APPLICATION_JSON_VALUE
+          })
+  public OperationStatus deleteUser(@PathVariable("publicId") String publicId)
+  {
+
+    if (!userService.isUserExistWithPublicId(publicId))
+    {
+      throw new UserServiceException(ErrorMessages.USER_NO_EXIST.getErrorMessage());
+    }
+
+    OperationStatus returnValue = new OperationStatus();
+
+    returnValue.setOperationName(OperationNames.DELETE.name());
+
+    try
+    {
+      userService.deleteUser(publicId);
+      returnValue.setOperationResult(OperationStatuses.SUCCESS.name());
+      return returnValue;
+    }
+    catch (UserServiceException use)
+    {
+      returnValue.setOperationResult(OperationStatuses.ERROR.name());
+      return returnValue;
+    }
+  }
 }
